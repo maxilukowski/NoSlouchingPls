@@ -1,18 +1,19 @@
 import React from 'react'
 import { View, Text, StyleSheet, Button } from 'react-native'
 
-const Pomodoro = ({navigation}) => {
+
+const Home = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <Text>Pomodoro</Text>
+      <Text>Home</Text>
       <Button
-        title="Go Home"
-        onPress={() => navigation.navigate('Home')}
+        title="Pomodoro Plx"
+        onPress={() => navigation.navigate('Pomodoro')}
       />
     </View>
   )
 }
-export default Pomodoro
+export default Home
 
 const styles = StyleSheet.create({
   container: {
