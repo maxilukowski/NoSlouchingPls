@@ -1,36 +1,58 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Button, Text, View } from 'react-native'
 
 const TomatenTimer = () => {
-  const [timer, setTimer] = useState(0)
+  const [time, setTime] = useState({ seconds: 0, minutes: 0 })
   const [isPaused, setIsPaused] = useState(true)
-  const countRef = useRef()
+  const timerRef = useRef()
+
+  useEffect(() => {
+    minuteConverter()
+  }, [time])
+
   return (
     <View>
-      <Text>{timer}</Text>
+      <Text>
+        {time.minutes.toString().length === 1
+          ? `0${time.minutes}`
+          : time.minutes}
+        :
+        {time.seconds.toString().length === 1
+          ? `0${time.seconds}`
+          : time.seconds}
+      </Text>
       <Button onPress={handleStart} title='start' />
       <Button onPress={handlePause} title='pause' />
       <Button onPress={handleReset} title='reset' />
     </View>
   )
+
   function handleStart() {
     if (isPaused) {
-      countRef.current = setInterval(() => {
-        setTimer((timer) => timer + 1)
+      timerRef.current = setInterval(() => {
+        setTime((time) => {
+          return { ...time, seconds: time.seconds + 1 }
+        })
       }, 1000)
     }
     setIsPaused(false)
   }
 
   function handlePause() {
-    clearInterval(countRef.current)
+    clearInterval(timerRef.current)
     setIsPaused(true)
   }
 
   function handleReset() {
-    clearInterval(countRef.current)
-    setTimer(0)
+    clearInterval(timerRef.current)
+    setTime({ seconds: 0, minutes: 0 })
     setIsPaused(true)
+  }
+
+  function minuteConverter() {
+    if (time.seconds === 59) {
+      setTime({ minutes: time.minutes + 1, seconds: 0 })
+    }
   }
 }
 export default TomatenTimer
