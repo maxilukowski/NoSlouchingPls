@@ -4,7 +4,6 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import 'react-native-gesture-handler'
 import Pomodoro from './pages/Pomodoro'
 import Home from './pages/Home'
-import Sound from './pages/Sound'
 
 const Tab = createMaterialTopTabNavigator()
 
@@ -14,7 +13,6 @@ const App = () => {
       <Tab.Navigator tabBarPosition='bottom'>
         <Tab.Screen name='Home' component={Home} />
         <Tab.Screen name='Pomodoro' component={Pomodoro} />
-        <Tab.Screen name='Sound' component={Sound} />
       </Tab.Navigator>
     </NavigationContainer>
   )

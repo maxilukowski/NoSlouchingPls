@@ -1,14 +1,29 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Button, Text, View } from 'react-native'
+import { Audio } from 'expo-av'
 
 const TomatenTimer = () => {
   const [time, setTime] = useState({ seconds: 0, minutes: 0 })
   const [isPaused, setIsPaused] = useState(true)
+  const [sound, setSound] = useState()
   const timerRef = useRef()
 
   useEffect(() => {
     minuteConverter()
+    if (time.seconds > 3) {
+      handlePause()
+      playSound()
+    }
   }, [time])
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          console.log('Unloading Sound')
+          sound.unloadAsync()
+        }
+      : undefined
+  }, [sound])
 
   return (
     <View>
@@ -53,6 +68,16 @@ const TomatenTimer = () => {
     if (time.seconds === 59) {
       setTime({ minutes: time.minutes + 1, seconds: 0 })
     }
+  }
+  async function playSound() {
+    console.log('Loading Sound')
+    const { sound } = await Audio.Sound.createAsync(
+      require('../assets/alarm.mp3')
+    )
+    setSound(sound)
+
+    console.log('Playing Sound')
+    await sound.playAsync()
   }
 }
 export default TomatenTimer
