@@ -1,13 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Button, Text, View } from 'react-native'
+import { View } from 'react-native'
 import { Audio } from 'expo-av'
+import TomatenTimerBrake from './TomatenTimerBrake'
+import TomatenTimerRunning from './TomatenTimerRunning'
 
 const TomatenTimer = () => {
   const [time, setTime] = useState({ seconds: 0, minutes: 0 })
   const [loopCounter, setLoopCounter]= useState(0)
   const [isPaused, setIsPaused] = useState(true)
   const [sound, setSound] = useState()
-  const [timeForABreak, setTimeForABreak]=useState(false)
+  const [isBrake, setIsBrake]=useState(false)
   const timerRef = useRef()
   const loopRef = useRef()
 
@@ -19,7 +21,7 @@ const TomatenTimer = () => {
           setLoopCounter(loopCounter=>loopCounter +1)
           playSound()
         },1000)
-      setTimeForABreak(true)
+      setIsBrake(true)
     }
   }, [time])
 
@@ -42,18 +44,12 @@ const TomatenTimer = () => {
 
   return (
     <View>
-      <Text>
-        {time.minutes.toString().length === 1
-          ? `0${time.minutes}`
-          : time.minutes}
-        :
-        {time.seconds.toString().length === 1
-          ? `0${time.seconds}`
-          : time.seconds}
-      </Text>
-      <Button onPress={handleStart} title='start' disabled={timeForABreak} />
-      <Button onPress={handlePause} title='pause' />
-      <Button onPress={handleReset} title='reset' />
+      {!isBrake?
+          <TomatenTimerRunning handleStart={handleStart} handlePause={handlePause} handleReset={handleReset} time={time} isBrake={isBrake}/>
+          :
+          <TomatenTimerBrake isBrake={isBrake} setIsBrake={setIsBrake}/>
+    }
+
     </View>
   )
 
@@ -77,7 +73,7 @@ const TomatenTimer = () => {
     clearInterval(timerRef.current)
     setTime({ seconds: 0, minutes: 0 })
     setIsPaused(true)
-    setTimeForABreak(false)
+    setIsBrake(false)
   }
 
   function minuteConverter() {
