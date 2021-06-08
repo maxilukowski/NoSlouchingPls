@@ -1,10 +1,16 @@
-import React from "react"
+import React from 'react'
 import { Button, Text, View } from 'react-native'
 
-const TomatenTimerRunning=({handleStart,handlePause,handleReset,time,isBrake})=>{
-    return(
+const TomatenTimerRunning = ({
+  handleStart,
+  handlePause,
+  handleReset,
+  time,
+  isBrake,
+}) => {
+  return (
     <View>
-        <Text>
+      <Text>
         {time.minutes.toString().length === 1
           ? `0${time.minutes}`
           : time.minutes}
@@ -17,7 +23,7 @@ const TomatenTimerRunning=({handleStart,handlePause,handleReset,time,isBrake})=>
       <Button onPress={handlePause} title='pause' />
       <Button onPress={handleReset} title='reset' />
     </View>
-    )
+  )
 }
 
 export default TomatenTimerRunning

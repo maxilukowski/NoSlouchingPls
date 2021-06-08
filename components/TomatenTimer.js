@@ -6,10 +6,10 @@ import TomatenTimerRunning from './TomatenTimerRunning'
 
 const TomatenTimer = () => {
   const [time, setTime] = useState({ seconds: 0, minutes: 0 })
-  const [loopCounter, setLoopCounter]= useState(0)
+  const [loopCounter, setLoopCounter] = useState(0)
   const [isPaused, setIsPaused] = useState(true)
   const [sound, setSound] = useState()
-  const [isBrake, setIsBrake]=useState(false)
+  const [isBrake, setIsBrake] = useState(false)
   const timerRef = useRef()
   const loopRef = useRef()
 
@@ -17,21 +17,21 @@ const TomatenTimer = () => {
     minuteConverter()
     if (time.seconds > 3) {
       handlePause()
-        loopRef.current=setInterval(()=>{
-          setLoopCounter(loopCounter=>loopCounter +1)
-          playSound()
-        },1000)
+      loopRef.current = setInterval(() => {
+        setLoopCounter((loopCounter) => loopCounter + 1)
+        playSound()
+      }, 1000)
       setIsBrake(true)
     }
   }, [time])
 
-  useEffect(()=>{
+  useEffect(() => {
     const loopAmount = 5
-    if(loopCounter>=loopAmount) {
+    if (loopCounter >= loopAmount) {
       clearInterval(loopRef.current)
       setLoopCounter(loopCounter - loopCounter)
     }
-  },[loopCounter])
+  }, [loopCounter])
 
   useEffect(() => {
     return sound
@@ -44,12 +44,17 @@ const TomatenTimer = () => {
 
   return (
     <View>
-      {!isBrake?
-          <TomatenTimerRunning handleStart={handleStart} handlePause={handlePause} handleReset={handleReset} time={time} isBrake={isBrake}/>
-          :
-          <TomatenTimerBrake isBrake={isBrake} setIsBrake={setIsBrake}/>
-    }
-
+      {!isBrake ? (
+        <TomatenTimerRunning
+          handleStart={handleStart}
+          handlePause={handlePause}
+          handleReset={handleReset}
+          time={time}
+          isBrake={isBrake}
+        />
+      ) : (
+        <TomatenTimerBrake isBrake={isBrake} setIsBrake={setIsBrake} />
+      )}
     </View>
   )
 
