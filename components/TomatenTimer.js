@@ -4,17 +4,32 @@ import { Audio } from 'expo-av'
 
 const TomatenTimer = () => {
   const [time, setTime] = useState({ seconds: 0, minutes: 0 })
+  const [loopCounter, setLoopCounter]= useState(0)
   const [isPaused, setIsPaused] = useState(true)
   const [sound, setSound] = useState()
+  const [timeForABreak, setTimeForABreak]=useState(false)
   const timerRef = useRef()
+  const loopRef = useRef()
 
   useEffect(() => {
     minuteConverter()
     if (time.seconds > 3) {
       handlePause()
-      playSound()
+        loopRef.current=setInterval(()=>{
+          setLoopCounter(loopCounter=>loopCounter +1)
+          playSound()
+        },1000)
+      setTimeForABreak(true)
     }
   }, [time])
+
+  useEffect(()=>{
+    const loopAmount = 5
+    if(loopCounter>=loopAmount) {
+      clearInterval(loopRef.current)
+      setLoopCounter(loopCounter - loopCounter)
+    }
+  },[loopCounter])
 
   useEffect(() => {
     return sound
@@ -36,7 +51,7 @@ const TomatenTimer = () => {
           ? `0${time.seconds}`
           : time.seconds}
       </Text>
-      <Button onPress={handleStart} title='start' />
+      <Button onPress={handleStart} title='start' disabled={timeForABreak} />
       <Button onPress={handlePause} title='pause' />
       <Button onPress={handleReset} title='reset' />
     </View>
@@ -62,6 +77,7 @@ const TomatenTimer = () => {
     clearInterval(timerRef.current)
     setTime({ seconds: 0, minutes: 0 })
     setIsPaused(true)
+    setTimeForABreak(false)
   }
 
   function minuteConverter() {
