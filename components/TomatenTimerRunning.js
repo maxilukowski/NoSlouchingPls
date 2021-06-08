@@ -6,7 +6,6 @@ const TomatenTimerRunning = ({
   handlePause,
   handleReset,
   time,
-  isBrake,
 }) => {
   return (
     <View>
@@ -19,7 +18,7 @@ const TomatenTimerRunning = ({
           ? `0${time.seconds}`
           : time.seconds}
       </Text>
-      <Button onPress={handleStart} title='start' disabled={isBrake} />
+      <Button onPress={handleStart} title='start' />
       <Button onPress={handlePause} title='pause' />
       <Button onPress={handleReset} title='reset' />
     </View>
