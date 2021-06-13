@@ -13,7 +13,7 @@ const TomatenTimerBreak = ({ setIsBreak, time, setTime }) => {
 
   return (
     <View style={styles.container}>
-      <Text>
+      <Text style={styles.timer}>
         {time.minutes.toString().length === 1
           ? `0${time.minutes}`
           : time.minutes}
@@ -49,5 +49,8 @@ const styles = StyleSheet.create({
   },
   buttons: {
     marginTop: 30,
+  },
+  timer: {
+    fontSize: 30,
   },
 })

@@ -9,7 +9,7 @@ const TomatenTimerRunning = ({
 }) => {
   return (
     <View style={styles.container}>
-      <Text>
+      <Text style={styles.timer}>
         {time.minutes.toString().length === 1
           ? `0${time.minutes}`
           : time.minutes}
@@ -42,5 +42,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '50%',
     justifyContent: 'space-around',
+  },
+  timer: {
+    fontSize: 30,
   },
 })
