@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Text, View } from 'react-native'
+import { Button, Text, View, StyleSheet } from 'react-native'
 
 const TomatenTimerRunning = ({
   handleStart,
@@ -8,7 +8,7 @@ const TomatenTimerRunning = ({
   time,
 }) => {
   return (
-    <View>
+    <View style={styles.container}>
       <Text>
         {time.minutes.toString().length === 1
           ? `0${time.minutes}`
@@ -18,11 +18,29 @@ const TomatenTimerRunning = ({
           ? `0${time.seconds}`
           : time.seconds}
       </Text>
-      <Button onPress={handleStart} title='start' />
-      <Button onPress={handlePause} title='pause' />
-      <Button onPress={handleReset} title='reset' />
+      <View style={styles.buttons}>
+        <Button onPress={handleStart} title='start' />
+        <Button onPress={handlePause} title='pause' />
+        <Button onPress={handleReset} title='reset' />
+      </View>
     </View>
   )
 }
 
 export default TomatenTimerRunning
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  buttons: {
+    marginTop: 30,
+    flexDirection: 'row',
+    width: '50%',
+    justifyContent: 'space-around',
+  },
+})

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Button, View, Text } from 'react-native'
+import { Button, View, Text, StyleSheet } from 'react-native'
 
 const TomatenTimerBreak = ({ setIsBreak, time, setTime }) => {
   const timerRef = useRef()
@@ -12,7 +12,7 @@ const TomatenTimerBreak = ({ setIsBreak, time, setTime }) => {
   }, [])
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text>
         {time.minutes.toString().length === 1
           ? `0${time.minutes}`
@@ -22,7 +22,9 @@ const TomatenTimerBreak = ({ setIsBreak, time, setTime }) => {
           ? `0${time.seconds}`
           : time.seconds}
       </Text>
-      <Button onPress={() => setIsBreak(false)} title='back' />
+      <View style={styles.buttons}>
+        <Button onPress={() => setIsBreak(false)} title='back' />
+      </View>
     </View>
   )
 
@@ -36,3 +38,16 @@ const TomatenTimerBreak = ({ setIsBreak, time, setTime }) => {
 }
 
 export default TomatenTimerBreak
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  buttons: {
+    marginTop: 30,
+  },
+})
