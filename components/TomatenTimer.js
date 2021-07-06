@@ -5,8 +5,8 @@ import TomatenTimerBreak from './TomatenTimerBreak'
 import TomatenTimerRunning from './TomatenTimerRunning'
 
 const TomatenTimer = () => {
-  const [timeWorking, setTimeWorking] = useState({ seconds: 0, minutes: 0 })
-  const [timePausing, setTimePausing] = useState({ seconds: 0, minutes: 0 })
+  const [timeWorking, setTimeWorking] = useState({ seconds: 5, minutes: 0 })
+  const [timePausing, setTimePausing] = useState({ seconds: 7, minutes: 0 })
   const [loopCounter, setLoopCounter] = useState(0)
   const [isPaused, setIsPaused] = useState(true)
   const [sound, setSound] = useState()
@@ -16,14 +16,17 @@ const TomatenTimer = () => {
 
   useEffect(() => {
     minuteConverter()
-    if (timeWorking.seconds > 4 || timePausing.seconds > 6) {
+    if (
+      (timeWorking.seconds === 1 && timeWorking.minutes === 0) ||
+      (timePausing.seconds === 1 && timePausing.minutes === 0)
+    ) {
       handlePause()
       loopRef.current = setInterval(() => {
         setLoopCounter((loopCounter) => loopCounter + 1)
         playSound()
       }, 1000)
-      setTimeWorking({ seconds: 0, minutes: 0 })
-      setTimePausing({ seconds: 0, minutes: 0 })
+      setTimeWorking({ seconds: 5, minutes: 0 })
+      setTimePausing({ seconds: 7, minutes: 0 })
       setIsBreak(!isBreak)
     }
   }, [timeWorking, timePausing])
@@ -55,12 +58,7 @@ const TomatenTimer = () => {
           time={timeWorking}
         />
       ) : (
-        <TomatenTimerBreak
-          setIsBreak={setIsBreak}
-          time={timePausing}
-          setTime={setTimePausing}
-          setSound={setSound}
-        />
+        <TomatenTimerBreak setIsBreak={setIsBreak} time={timePausing} setTime={setTimePausing} setSound={setSound} />
       )}
     </View>
   )
@@ -69,7 +67,7 @@ const TomatenTimer = () => {
     if (isPaused) {
       timerRef.current = setInterval(() => {
         setTimeWorking((timeWorking) => {
-          return { ...timeWorking, seconds: timeWorking.seconds + 1 }
+          return { ...timeWorking, seconds: timeWorking.seconds - 1 }
         })
       }, 1000)
     }
@@ -83,20 +81,18 @@ const TomatenTimer = () => {
 
   function handleReset() {
     clearInterval(timerRef.current)
-    setTimeWorking({ seconds: 0, minutes: 0 })
+    setTimeWorking({ seconds: 5, minutes: 0 })
     setIsPaused(true)
   }
 
   function minuteConverter() {
-    if (timeWorking.seconds === 59) {
-      setTimeWorking({ minutes: timeWorking.minutes + 1, seconds: 0 })
+    if (timeWorking.seconds === 1) {
+      setTimeWorking({ minutes: timeWorking.minutes - 1, seconds: 60 })
     }
   }
   async function playSound() {
     console.log('Loading Sound')
-    const { sound } = await Audio.Sound.createAsync(
-      require('../assets/alarm.mp3')
-    )
+    const { sound } = await Audio.Sound.createAsync(require('../assets/alarm.mp3'))
     setSound(sound)
 
     console.log('Playing Sound')
