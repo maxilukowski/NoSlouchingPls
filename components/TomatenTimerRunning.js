@@ -1,22 +1,13 @@
 import React from 'react'
 import { Button, Text, View, StyleSheet } from 'react-native'
 
-const TomatenTimerRunning = ({
-  handleStart,
-  handlePause,
-  handleReset,
-  time,
-}) => {
+const TomatenTimerRunning = ({ handleStart, handlePause, handleReset, time, toggleSettings }) => {
   return (
     <View style={styles.container}>
+      <Button title='settings' onPress={() => toggleSettings()} />
       <Text style={styles.timer}>
-        {time.minutes.toString().length === 1
-          ? `0${time.minutes}`
-          : time.minutes}
-        :
-        {time.seconds.toString().length === 1
-          ? `0${time.seconds}`
-          : time.seconds}
+        {time.minutes.toString().length === 1 ? `0${time.minutes}` : time.minutes}:
+        {time.seconds.toString().length === 1 ? `0${time.seconds}` : time.seconds}
       </Text>
       <View style={styles.buttons}>
         <Button onPress={handleStart} title='start' />

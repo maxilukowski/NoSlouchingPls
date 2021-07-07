@@ -4,7 +4,7 @@ import { Audio } from 'expo-av'
 import TomatenTimerBreak from './TomatenTimerBreak'
 import TomatenTimerRunning from './TomatenTimerRunning'
 
-const TomatenTimer = () => {
+const TomatenTimer = ({ toggleSettings }) => {
   const [timeWorking, setTimeWorking] = useState({ seconds: 5, minutes: 1 })
   const [timePausing, setTimePausing] = useState({ seconds: 7, minutes: 1 })
   const [loopCounter, setLoopCounter] = useState(0)
@@ -30,7 +30,7 @@ const TomatenTimer = () => {
   useEffect(() => {
     return sound
       ? () => {
-          console.log('Unloading Sound')
+          //unloading sound
           sound.unloadAsync()
         }
       : undefined
@@ -40,6 +40,7 @@ const TomatenTimer = () => {
     <View>
       {!isBreak ? (
         <TomatenTimerRunning
+          toggleSettings={toggleSettings}
           handleStart={handleStart}
           handlePause={handlePause}
           handleReset={handleReset}
@@ -81,11 +82,11 @@ const TomatenTimer = () => {
     }
   }
   async function playSound() {
-    console.log('Loading Sound')
+    //loading sound
     const { sound } = await Audio.Sound.createAsync(require('../assets/alarm.mp3'))
     setSound(sound)
 
-    console.log('Playing Sound')
+    //playing sound
     await sound.playAsync()
   }
 
