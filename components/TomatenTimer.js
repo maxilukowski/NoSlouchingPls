@@ -5,8 +5,8 @@ import TomatenTimerBreak from './TomatenTimerBreak'
 import TomatenTimerRunning from './TomatenTimerRunning'
 
 const TomatenTimer = () => {
-  const [timeWorking, setTimeWorking] = useState({ seconds: 5, minutes: 0 })
-  const [timePausing, setTimePausing] = useState({ seconds: 7, minutes: 0 })
+  const [timeWorking, setTimeWorking] = useState({ seconds: 5, minutes: 1 })
+  const [timePausing, setTimePausing] = useState({ seconds: 7, minutes: 1 })
   const [loopCounter, setLoopCounter] = useState(0)
   const [isPaused, setIsPaused] = useState(true)
   const [sound, setSound] = useState()
@@ -16,19 +16,7 @@ const TomatenTimer = () => {
 
   useEffect(() => {
     minuteConverter()
-    if (
-      (timeWorking.seconds === 1 && timeWorking.minutes === 0) ||
-      (timePausing.seconds === 1 && timePausing.minutes === 0)
-    ) {
-      handlePause()
-      loopRef.current = setInterval(() => {
-        setLoopCounter((loopCounter) => loopCounter + 1)
-        playSound()
-      }, 1000)
-      setTimeWorking({ seconds: 5, minutes: 0 })
-      setTimePausing({ seconds: 7, minutes: 0 })
-      setIsBreak(!isBreak)
-    }
+    switchBetweenWorkAndBreak()
   }, [timeWorking, timePausing])
 
   useEffect(() => {
@@ -81,13 +69,15 @@ const TomatenTimer = () => {
 
   function handleReset() {
     clearInterval(timerRef.current)
-    setTimeWorking({ seconds: 5, minutes: 0 })
+    setTimeWorking({ seconds: 5, minutes: 1 })
     setIsPaused(true)
   }
 
   function minuteConverter() {
-    if (timeWorking.seconds === 1) {
-      setTimeWorking({ minutes: timeWorking.minutes - 1, seconds: 60 })
+    if (timeWorking.seconds === 0) {
+      setTimeout(() => {
+        setTimeWorking({ minutes: timeWorking.minutes - 1, seconds: 59 })
+      }, 1000)
     }
   }
   async function playSound() {
@@ -97,6 +87,22 @@ const TomatenTimer = () => {
 
     console.log('Playing Sound')
     await sound.playAsync()
+  }
+
+  function switchBetweenWorkAndBreak() {
+    if (
+      (timeWorking.seconds === 0 && timeWorking.minutes === 0) ||
+      (timePausing.seconds === 0 && timePausing.minutes === 0)
+    ) {
+      handlePause()
+      loopRef.current = setInterval(() => {
+        setLoopCounter((loopCounter) => loopCounter + 1)
+        playSound()
+      }, 1000)
+      setTimeWorking({ seconds: 5, minutes: 1 })
+      setTimePausing({ seconds: 7, minutes: 1 })
+      setIsBreak(!isBreak)
+    }
   }
 }
 export default TomatenTimer
